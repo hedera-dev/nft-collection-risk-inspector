@@ -93,7 +93,7 @@ export const RugRiskWizardNewTokenTabForm = ({
         admin_key: false,
         wipe_key: false,
         freeze_key: false,
-        supply_key: true,
+        supply_key: false,
         kyc_key: false,
         pause_key: false,
         fee_schedule_key: false,
