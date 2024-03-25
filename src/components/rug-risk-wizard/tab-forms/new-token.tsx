@@ -55,10 +55,10 @@ export const RugRiskWizardNewTokenTabForm = ({ submitButtonText }: { submitButto
     <RugRiskWizardTabForm
       onSubmit={calculateRiskScoreForNewToken}
       submitButtonText={submitButtonText}
+      submitOnValueChange
       keysWithDescriptions={inputsDataForNewTokenKeysWithDescriptions}
       schema={newTokenSchema}
       disableIfDirty={false}
-      submitOnValueChange
       defaultValues={{
         total_supply: 0,
         max_supply: undefined,
