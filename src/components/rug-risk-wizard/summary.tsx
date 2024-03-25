@@ -18,17 +18,15 @@
  *
  */
 
-import { Card, CardContent, CardDescription } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/utils/helpers';
 import capitalize from 'lodash.capitalize';
+import { useRugRiskWizardContext } from '@/components/rug-risk-wizard';
+import { Card, CardDescription } from '@/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { en } from '@/utils/dictionaries';
+import { cn } from '@/utils/helpers';
 
 const dictionary = en.rugRiskWizard.summary;
 
@@ -60,32 +58,38 @@ const HowWeAreCalculatingRiskLevelPopover = () => (
   </Popover>
 );
 
-const RugRiskWizardSummaryCardHeader = ({ isCalculated = false }: { isCalculated?: boolean }) => (
-  <div className="flex flex-col space-y-1.5 pb-4 ">
-    <div className="flex flex-col">
-      <span className="text-2xl font-semibold leading-none tracking-tight">{dictionary.cardHeader.title}</span>
-      <div>
-        <HowWeAreCalculatingRiskLevelPopover />
+const RugRiskWizardSummaryCardHeader = ({ isCalculated = false, hasFormError = false }: { isCalculated?: boolean; hasFormError?: boolean }) => {
+  let cardDescriptionText: string = isCalculated ? dictionary.cardHeader.description.calculated : dictionary.cardHeader.description.notCalculated;
+
+  if (hasFormError) {
+    cardDescriptionText = dictionary.cardHeader.description.formError;
+  }
+
+  return (
+    <div className="flex flex-col space-y-1.5 pb-4 ">
+      <div className="flex flex-col">
+        <span className="text-2xl font-semibold leading-none tracking-tight">{dictionary.cardHeader.title}</span>
+        <div>
+          <HowWeAreCalculatingRiskLevelPopover />
+        </div>
       </div>
+      <CardDescription>{cardDescriptionText}</CardDescription>
     </div>
-    <CardDescription>{isCalculated ? dictionary.cardHeader.description.calculated : dictionary.cardHeader.description.notCalculated}</CardDescription>
-  </div>
-);
+  );
+};
 
-export const RugRiskWizardSummary = ({
-  riskLevel,
-  riskScore,
-  riskFactors,
-  className,
-}: {
-  className?: string;
-  riskLevel: null | 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH';
-  riskScore: null | number;
-  riskFactors: Record<string, number> | null;
-}) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+export const RugRiskWizardSummary = () => {
+  const { riskLevel, riskScore, riskFactors, hasFormError } = useRugRiskWizardContext();
 
-  const cardWrapperClassName = cn('rounded-none border-0 lg:border-l p-0 px-6 lg:pr-0 shadow-none', className);
+  const cardWrapperClassName = 'rounded-none border-0 lg:border-l p-0 px-6 lg:pr-0 shadow-none';
+
+  if (hasFormError) {
+    return (
+      <Card className={cardWrapperClassName}>
+        <RugRiskWizardSummaryCardHeader hasFormError />
+      </Card>
+    );
+  }
 
   if (riskScore === null || !riskLevel) {
     return (
@@ -126,61 +130,30 @@ export const RugRiskWizardSummary = ({
 
       {riskFactors && (
         <>
-          <div className="mx-auto px-2 py-4">
-            <Button type="button" onClick={() => setIsDialogOpen(true)}>
-              {dictionary.calculatedRiskScoreContent.showAllRiskFactorsButtonText}
-            </Button>
+          <Separator className="my-10" />
+          <p className="pb-4 font-semibold">{dictionary.riskScoreFactorsTitle}</p>
+          <div className="grid gap-4">
+            <ScrollArea className="max-h-[70dvh]">
+              <div className="grid gap-4">
+                {Object.entries(riskFactors)
+                  .filter(([_, value]) => !!value)
+                  .map(([key, value]) => (
+                    <div
+                      key={key}
+                      className={cn('align-center flex justify-between gap-10 rounded-md border px-2 py-1 text-sm shadow-sm', {
+                        'bg-red-100': value >= 200,
+                        'bg-yellow-100': value < 200 && value > 40,
+                        'bg-green-100': value > 0 && value <= 40,
+                        'bg-gray-100': value === 0,
+                      })}
+                    >
+                      <p>{key.split('_').map(capitalize).join(' ')}</p>
+                      <p className="self-end font-semibold">{value}</p>
+                    </div>
+                  ))}
+              </div>
+            </ScrollArea>
           </div>
-
-          <Dialog open={isDialogOpen} defaultOpen={false} onOpenChange={() => setIsDialogOpen((prev) => !prev)}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="mb-6 text-2xl font-bold">{dictionary.calculatedRiskScoreContent.allRiskFactorsDialogTitle}</DialogTitle>
-                <DialogDescription>
-                  <CardContent className="grid gap-4">
-                    <ScrollArea className="max-h-[70dvh] px-4">
-                      <div className="grid gap-4">
-                        {Object.entries(riskFactors).map(([key, value]) => (
-                          <div
-                            key={key}
-                            className={cn('grid grid-cols-[25px_1fr] items-start rounded-md border p-5 shadow-sm', {
-                              'bg-red-100': value >= 200,
-                              'bg-yellow-100': value < 200 && value > 40,
-                              'bg-green-100': value > 0 && value <= 40,
-                              'bg-gray-100': value === 0,
-                            })}
-                          >
-                            <span
-                              className={cn('flex h-2 w-2 translate-y-1 rounded-full shadow', {
-                                'bg-red-600': value >= 200,
-                                'bg-yellow-600': value < 200 && value > 40,
-                                'bg-green-600': value > 0 && value <= 40,
-                                'bg-gray-600': value === 0,
-                              })}
-                            />
-                            <div className="space-y-1">
-                              <p className="text-sm font-medium leading-none">{key.split('_').map(capitalize).join(' ')}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {value > 0
-                                  ? `${dictionary.calculatedRiskScoreContent.allRiskFactorsDialogAddedRiskScore}: ${value}`
-                                  : dictionary.calculatedRiskScoreContent.allRiskFactorsDialogNoAffectRiskScore}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  </CardContent>
-                </DialogDescription>
-                <Separator />
-                <div className="flex gap-4">
-                  <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
-                    {dictionary.calculatedRiskScoreContent.allRiskFactorsDialogClose}
-                  </Button>
-                </div>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
         </>
       )}
     </Card>

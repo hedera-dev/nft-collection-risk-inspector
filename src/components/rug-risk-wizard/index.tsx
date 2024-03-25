@@ -18,109 +18,107 @@
  *
  */
 
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import type { RiskLevel, RiskScoreFactors } from '@hashgraph/hedera-nft-utilities/src/types/risk';
 import { RugRiskWizardSummary } from '@/components/rug-risk-wizard/summary';
-import { RugRiskWizardNewTokenTabForm } from '@/components/rug-risk-wizard/tab-forms/new-token';
 import { RugRiskWizardExistingTokenTabForm } from '@/components/rug-risk-wizard/tab-forms/existing-token';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsListElement } from '@/components/ui/tabs';
+import { RugRiskWizardNewTokenTabForm } from '@/components/rug-risk-wizard/tab-forms/new-token';
 import { Separator } from '@/components/ui/separator';
-import { en } from '@/utils/dictionaries';
+import { Tabs, TabsContent, TabsList, TabsListElement } from '@/components/ui/tabs';
 import { MatchMediaContextProvider } from '@/utils/MatchMediaContext';
+import { en } from '@/utils/dictionaries';
+
+interface RugRiskWizardContextProps {
+  riskScore: number | null;
+  setRiskScore: (score: number | null) => void;
+  riskLevel: null | RiskLevel;
+  setRiskLevel: (level: null | RiskLevel) => void;
+  riskFactors: RiskScoreFactors | null;
+  setRiskFactors: (factors: RiskScoreFactors | null) => void;
+  hasFormError: boolean;
+  setHasFormError: (hasFormError: boolean) => void;
+}
 
 const dictionary = en.rugRiskWizard;
 
+const RugRiskWizardContext = createContext<RugRiskWizardContextProps>({
+  riskScore: null,
+  setRiskScore: () => {},
+  riskLevel: null,
+  setRiskLevel: () => {},
+  riskFactors: null,
+  setRiskFactors: () => {},
+  hasFormError: false,
+  setHasFormError: () => {},
+});
+
+export const useRugRiskWizardContext = () => {
+  const context = useContext(RugRiskWizardContext);
+
+  if (!context) {
+    throw new Error('useRugRiskWizardContext must be used within a RugRiskWizardContextProvider');
+  }
+
+  return context;
+};
+
 export const RugRiskWizard = () => {
   const [riskScore, setRiskScore] = useState<number | null>(null);
-  const [riskLevel, setRiskLevel] = useState<null | 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH'>(null);
-  const [riskFactors, setRiskFactors] = useState<Record<string, number> | null>(null);
+  const [riskLevel, setRiskLevel] = useState<null | RiskLevel>(null);
+  const [riskFactors, setRiskFactors] = useState<RiskScoreFactors | null>(null);
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [hasFormError, setHasFormError] = useState<boolean>(false);
+
   const [activeTab, setActiveTab] = useState<'new-token' | 'existing-token'>('new-token');
 
   const isCalculated = riskScore !== null && !!riskLevel;
+
+  const submitButtonText = isCalculated ? dictionary.tabs.newToken.submitButtonText.recalculate : dictionary.tabs.newToken.submitButtonText.calculate;
 
   const resetRiskData = () => {
     setRiskLevel(null);
     setRiskScore(null);
     setRiskFactors(null);
+    setHasFormError(false);
   };
 
-  const toggleTab = () => {
-    setActiveTab(activeTab === 'new-token' ? 'existing-token' : 'new-token');
-  };
-
-  const handleTabChange = () => {
-    if (isCalculated) {
-      setIsDialogOpen(true);
-      return;
-    }
-
-    toggleTab();
-  };
-
-  const handleDialogCloseWithReset = () => {
-    setIsDialogOpen(false);
+  const handleTabChange = (tabName: 'new-token' | 'existing-token') => {
     resetRiskData();
-    toggleTab();
+    setActiveTab(tabName);
   };
 
   return (
-    <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[1.4fr,_1fr] lg:gap-0">
-      <Tabs value={activeTab} defaultValue={activeTab}>
-        <MatchMediaContextProvider>
-          <TabsList className="w-full justify-start rounded-none">
-            <TabsListElement isActive={activeTab === 'new-token'} onClick={() => activeTab !== 'new-token' && handleTabChange()}>
-              {dictionary.tabs.newToken.title}
-            </TabsListElement>
-            <TabsListElement isActive={activeTab === 'existing-token'} onClick={() => activeTab !== 'existing-token' && handleTabChange()}>
-              {dictionary.tabs.existingToken.title}
-            </TabsListElement>
-          </TabsList>
-        </MatchMediaContextProvider>
-        <Separator />
-        <TabsContent value="new-token" className="px-6 pt-6 lg:pb-6">
-          <RugRiskWizardNewTokenTabForm
-            setRiskFactors={setRiskFactors}
-            setRiskLevel={setRiskLevel}
-            setRiskScore={setRiskScore}
-            submitButtonText={
-              isCalculated ? dictionary.tabs.newToken.submitButtonText.recalculate : dictionary.tabs.newToken.submitButtonText.calculate
-            }
-          />
-        </TabsContent>
-        <TabsContent value="existing-token" className="px-6 pt-6 lg:pb-6">
-          <RugRiskWizardExistingTokenTabForm
-            // setRiskFactors={setRiskFactors}
-            setRiskLevel={setRiskLevel}
-            setRiskScore={setRiskScore}
-            submitButtonText={
-              isCalculated ? dictionary.tabs.existingToken.submitButtonText.recalculate : dictionary.tabs.existingToken.submitButtonText.calculate
-            }
-          />
-        </TabsContent>
-      </Tabs>
+    <RugRiskWizardContext.Provider
+      value={{ riskScore, setRiskScore, riskLevel, setRiskLevel, riskFactors, setRiskFactors, hasFormError, setHasFormError }}
+    >
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[1.4fr,_1fr] lg:gap-0">
+        <Tabs value={activeTab} defaultValue={activeTab}>
+          <MatchMediaContextProvider>
+            <TabsList className="w-full justify-start rounded-none">
+              <TabsListElement isActive={activeTab === 'new-token'} onClick={() => activeTab !== 'new-token' && handleTabChange('new-token')}>
+                {dictionary.tabs.newToken.title}
+              </TabsListElement>
+              <TabsListElement
+                isActive={activeTab === 'existing-token'}
+                onClick={() => activeTab !== 'existing-token' && handleTabChange('existing-token')}
+              >
+                {dictionary.tabs.existingToken.title}
+              </TabsListElement>
+            </TabsList>
+          </MatchMediaContextProvider>
+          <Separator />
+          <TabsContent value="new-token" className="px-6 pt-6 lg:pb-6">
+            <RugRiskWizardNewTokenTabForm submitButtonText={submitButtonText} />
+          </TabsContent>
+          <TabsContent value="existing-token" className="px-6 pt-6 lg:pb-6">
+            <RugRiskWizardExistingTokenTabForm submitButtonText={submitButtonText} />
+          </TabsContent>
+        </Tabs>
 
-      <Separator className="lg:hidden" />
+        <Separator className="lg:hidden" />
 
-      <RugRiskWizardSummary riskScore={riskScore} riskLevel={riskLevel} riskFactors={riskFactors} />
-
-      <Dialog open={isDialogOpen} defaultOpen={false} onOpenChange={() => setIsDialogOpen((prev) => !prev)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{dictionary.deleteCalculationResultsDialog.title}</DialogTitle>
-            <DialogDescription>{dictionary.deleteCalculationResultsDialog.description}</DialogDescription>
-            <Separator />
-            <div className="flex gap-4">
-              <Button onClick={handleDialogCloseWithReset}>{dictionary.deleteCalculationResultsDialog.delete}</Button>
-              <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
-                {dictionary.deleteCalculationResultsDialog.cancel}
-              </Button>
-            </div>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
+        <RugRiskWizardSummary />
+      </div>
+    </RugRiskWizardContext.Provider>
   );
 };

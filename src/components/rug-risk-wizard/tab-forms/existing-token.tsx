@@ -19,26 +19,19 @@
  */
 
 import { useState } from 'react';
-import { RugRiskWizardTabForm } from '@/components/rug-risk-wizard/tab-form';
-import { z } from 'zod';
 import { calculateRiskScoreFromTokenId } from '@hashgraph/hedera-nft-utilities/src/risk';
-import { existingTokenSchema } from '@/utils/schemas';
-import { inputsDataForExistingTokenKeysWithDescriptions } from '@/utils/forms-inputs-data';
+import { z } from 'zod';
+import { useRugRiskWizardContext } from '@/components/rug-risk-wizard';
+import { RugRiskWizardTabForm } from '@/components/rug-risk-wizard/tab-form';
 import { en } from '@/utils/dictionaries';
+import { inputsDataForExistingTokenKeysWithDescriptions } from '@/utils/forms-inputs-data';
+import { existingTokenSchema } from '@/utils/schemas';
 
 const dictionary = en.rugRiskWizard.tabs.existingToken;
 
-export const RugRiskWizardExistingTokenTabForm = ({
-  // setRiskFactors,
-  setRiskLevel,
-  setRiskScore,
-  submitButtonText,
-}: {
-  submitButtonText: string;
-  setRiskScore: (score: number | null) => void;
-  setRiskLevel: (level: 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH' | null) => void;
-  // setRiskFactors: (factors: Record<string, number> | null) => void;
-}) => {
+export const RugRiskWizardExistingTokenTabForm = ({ submitButtonText }: { submitButtonText: string }) => {
+  const { setRiskFactors, setRiskLevel, setRiskScore } = useRugRiskWizardContext();
+
   const [isFetchingCollectionData, setIsFetchingCollectionData] = useState(false);
   const [fetchingCollectionDataError, setIsFetchingCollectionDataError] = useState<string | null>(null);
 
@@ -52,8 +45,9 @@ export const RugRiskWizardExistingTokenTabForm = ({
         network: 'mainnet',
       });
 
-      setRiskLevel(existingTokenRiskScoreCalculation.riskLevel as 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH');
+      setRiskLevel(existingTokenRiskScoreCalculation.riskLevel);
       setRiskScore(existingTokenRiskScoreCalculation.riskScore);
+      setRiskFactors(existingTokenRiskScoreCalculation.riskScoreFactors);
     } catch (e) {
       if (!values.token_id) {
         setIsFetchingCollectionDataError(dictionary.errors.provideTokenId);

@@ -19,32 +19,23 @@
  */
 
 import { calculateRiskScoreFromData } from '@hashgraph/hedera-nft-utilities/src/risk';
-import omit from 'lodash.omit';
 import { z } from 'zod';
+import { useRugRiskWizardContext } from '@/components/rug-risk-wizard';
 import { RugRiskWizardTabForm } from '@/components/rug-risk-wizard/tab-form';
-import { defaultWeights } from '@/utils/consts';
 import { inputsDataForNewTokenKeysWithDescriptions } from '@/utils/forms-inputs-data';
 import { newTokenSchema } from '@/utils/schemas';
 
 const renderRiskScoreCalculationKey = (isKey?: boolean) => (isKey ? 'key' : '');
 
-export const RugRiskWizardNewTokenTabForm = ({
-  setRiskFactors,
-  setRiskLevel,
-  setRiskScore,
-  submitButtonText,
-}: {
-  submitButtonText: string;
-  setRiskScore: (score: number | null) => void;
-  setRiskLevel: (level: 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH' | null) => void;
-  setRiskFactors: (factors: Record<string, number> | null) => void;
-}) => {
+export const RugRiskWizardNewTokenTabForm = ({ submitButtonText }: { submitButtonText: string }) => {
+  const { setRiskFactors, setRiskLevel, setRiskScore } = useRugRiskWizardContext();
+
   const calculateRiskScoreForNewToken = (values: z.infer<typeof newTokenSchema>) => {
     const newTokenRiskScoreCalculation = calculateRiskScoreFromData({
       metadata: {
         total_supply: values.total_supply.toString(),
         max_supply: values.max_supply ? values.max_supply.toString() : '',
-        supply_type: values.max_supply && values.max_supply > 0 ? 'finite' : 'infinite',
+        supply_type: values.max_supply && values.max_supply > 0 ? 'FINITE' : 'INFINITE',
         admin_key: renderRiskScoreCalculationKey(values.admin_key),
         wipe_key: renderRiskScoreCalculationKey(values.wipe_key),
         freeze_key: renderRiskScoreCalculationKey(values.freeze_key),
@@ -55,29 +46,9 @@ export const RugRiskWizardNewTokenTabForm = ({
       },
     });
 
-    setRiskLevel(newTokenRiskScoreCalculation.riskLevel as 'NORISK' | 'LOW' | 'MEDIUM' | 'HIGH');
+    setRiskLevel(newTokenRiskScoreCalculation.riskLevel);
     setRiskScore(newTokenRiskScoreCalculation.riskScore);
-
-    const riskFactorsFromFormValues = Object.entries(omit(values, ['max_supply', 'total_supply', 'supply_key'])).reduce(
-      (acc, [key, value]) => ({
-        ...acc,
-        [key]: value
-          ? inputsDataForNewTokenKeysWithDescriptions?.[
-              key as keyof Omit<typeof inputsDataForNewTokenKeysWithDescriptions, 'max_supply' | 'total_supply'>
-            ]?.defaultWeight
-          : 0,
-      }),
-      { supply_type: 0, supply_key: 0 },
-    );
-
-    const isSupplyTypeInfinite = Number(values.max_supply) > 0;
-    const supplyTypeIsInfiniteAndSupplyKeyIsDefined = isSupplyTypeInfinite && values.supply_key;
-    const supplyTypeIsNotInfiniteAndTotalSupplyIsEqualToMaxSupply = !isSupplyTypeInfinite && values.max_supply == values.total_supply;
-
-    riskFactorsFromFormValues.supply_key = supplyTypeIsInfiniteAndSupplyKeyIsDefined ? defaultWeights.properties.supply_type_infinite : 0;
-    riskFactorsFromFormValues.supply_type = supplyTypeIsNotInfiniteAndTotalSupplyIsEqualToMaxSupply ? defaultWeights.keys.supply_key : 0;
-
-    setRiskFactors(riskFactorsFromFormValues);
+    setRiskFactors(newTokenRiskScoreCalculation.riskScoreFactors);
   };
 
   return (
@@ -87,6 +58,7 @@ export const RugRiskWizardNewTokenTabForm = ({
       keysWithDescriptions={inputsDataForNewTokenKeysWithDescriptions}
       schema={newTokenSchema}
       disableIfDirty={false}
+      submitOnValueChange
       defaultValues={{
         total_supply: 0,
         max_supply: undefined,

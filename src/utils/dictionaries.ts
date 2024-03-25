@@ -79,6 +79,7 @@ export const en = {
       cardHeader: {
         title: 'Risk score calculation',
         description: {
+          formError: 'Please fix issues in the form to see results of calculation the risk score of your collection.',
           calculated: 'Your collection risk score has been calculated.',
           notCalculated: 'Please fill in the form to see results of calculation the risk score of your collection.',
         },
@@ -92,6 +93,7 @@ export const en = {
         allRiskFactorsDialogNoAffectRiskScore: 'Does not affect risk score',
         allRiskFactorsDialogClose: 'Close',
       },
+      riskScoreFactorsTitle: 'Risk score factors:',
     },
   },
   form: {
