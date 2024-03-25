@@ -23,8 +23,8 @@ import { en } from '@/utils/dictionaries';
 
 export const newTokenSchema = z
   .object({
-    total_supply: z.coerce.number().int().min(0).max(1000000000),
-    max_supply: z.coerce.number().int().min(0).max(1000000000).nullish(),
+    total_supply: z.coerce.number().int().min(0),
+    max_supply: z.coerce.number().int().min(0).nullish(),
     admin_key: z.boolean().optional(),
     wipe_key: z.boolean().optional(),
     freeze_key: z.boolean().optional(),
