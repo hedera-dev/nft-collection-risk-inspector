@@ -24,7 +24,7 @@ import { en } from '@/utils/dictionaries';
 const App = () => {
   return (
     <main>
-      <section className="container mx-auto flex flex-col gap-8 lg:gap-20">
+      <section className="container mx-auto flex flex-col gap-8 lg:gap-20 mb-28">
         <div>
           <h1 className="mt-20 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">{en.appHeader.title}</h1>
           <p className="text-center leading-7 [&:not(:first-child)]:mt-6">{en.appHeader.description}</p>
