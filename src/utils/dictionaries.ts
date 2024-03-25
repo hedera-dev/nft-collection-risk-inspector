@@ -31,8 +31,7 @@ export const en = {
         submitButtonText: {
           calculate: 'Calculate risk score',
           recalculate: 'Recalculate risk score',
-        },
-        atLeastOneKeyNeedsToBeEnabledTooltipText: 'At least one key must be enabled to calculate risk score.',
+        }
       },
       existingToken: {
         title: 'Existing token',
@@ -47,12 +46,6 @@ export const en = {
           cannotFindCollectionWithId: (id: string) => `Cannot find collection with id ${id} on Hedera Mainnet network.`,
         },
       },
-    },
-    deleteCalculationResultsDialog: {
-      title: 'Are you absolutely sure?',
-      description: 'This action cannot be undone. This will permanently delete your current calculations result.',
-      delete: 'Proceed',
-      cancel: 'Cancel',
     },
     summary: {
       howWeAreCalculatingRiskLevelPopover: {
@@ -87,11 +80,7 @@ export const en = {
       calculatedRiskScoreContent: {
         collectionRiskLevelTitle: 'Collection risk level:',
         collectionRiskScoreTitle: 'Total collection risk score:',
-        showAllRiskFactorsButtonText: 'List all the risk factors',
-        allRiskFactorsDialogTitle: 'List all the risk factors',
-        allRiskFactorsDialogAddedRiskScore: 'Added risk score',
-        allRiskFactorsDialogNoAffectRiskScore: 'Does not affect risk score',
-        allRiskFactorsDialogClose: 'Close',
+        showAllRiskFactorsButtonText: 'List all the risk factors'
       },
       riskScoreFactorsTitle: 'Risk score factors:',
     },
