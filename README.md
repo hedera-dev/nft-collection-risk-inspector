@@ -1,14 +1,14 @@
 # Rug Risk Inspector for Hedera Tokens
 
-This application provides a tool to calculate the rug risk score for tokens on the Hedera network. It is built using `React` with `Vite` as the build tool, leveraging components from `shadcn` and styled with `Tailwind CSS`. The rarity calculation feature is facilitated by the `@hashgraph/hedera-nft-utilities` package.
+This application provides a tool to calculate the rug risk for tokens on the Hedera network. It is built using `React` with `Vite` as the build tool, leveraging components from `shadcn` and styled with `Tailwind CSS`. The risk score calculation feature is facilitated by the `@hashgraph/hedera-nft-utilities` package.
 
-<a href="public/rug-risc-score-inspector-readme.png" target="_blank" >
+<a href="public/rug-risk-score-inspector-readme.png" target="_blank" >
   <img alt='The Rug Risk Inspector app preview' src='public/rug-risc-score-inspector-readme.png'  width="40%" style='border: 10px solid #000'/>
 </a>
 
 ## Features
 
-- **Risk Score Calculation**: Utilize the `@hashgraph/hedera-nft-utilities` package to calculate token rarity for new or existing Hedera Token.
+- **Risk Score Calculation**: Utilize the `@hashgraph/hedera-nft-utilities` package to calculate token risk score for new or existing Hedera Token.
 - **User-Friendly Interface**: Intuitive and easy-to-use interface built with `React` and components built on `shadcn/ui`.
 - **Fast Development**: Developed with Vite, ensuring speedy development and hot module replacement.
 
@@ -28,7 +28,7 @@ To run this app, you need to have the following pre-requirements:
 1. Clone the repository:
 
 ```bash
-git clone ???????????
+git clone https://github.com/Ashe-Oro-Accelerator/rug-risk-inspector
 ```
 
 2. Navigate to the project directory:
