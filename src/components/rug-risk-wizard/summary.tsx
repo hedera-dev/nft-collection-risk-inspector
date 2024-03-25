@@ -39,17 +39,17 @@ const HowWeAreCalculatingRiskLevelPopover = () => (
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-gray-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.noRisk.label}</TableHead>
-            <TableHead className="text-green-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.low.label}</TableHead>
-            <TableHead className="text-yellow-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.medium.label}</TableHead>
+            <TableHead className="text-green-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.noRisk.label}</TableHead>
+            <TableHead className="text-yellow-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.low.label}</TableHead>
+            <TableHead className="text-orange-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.medium.label}</TableHead>
             <TableHead className="text-right text-red-600">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.high.label}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="text-gray-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.noRisk.range}</TableCell>
-            <TableCell className="text-green-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.low.range}</TableCell>
-            <TableCell className="text-yellow-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.medium.range}</TableCell>
+            <TableCell className="text-green-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.noRisk.range}</TableCell>
+            <TableCell className="text-yellow-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.low.range}</TableCell>
+            <TableCell className="text-orange-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.medium.range}</TableCell>
             <TableCell className="text-right text-red-800">{dictionary.howWeAreCalculatingRiskLevelPopover.riskLevels.high.range}</TableCell>
           </TableRow>
         </TableBody>
@@ -109,9 +109,9 @@ export const RugRiskWizardSummary = () => {
               <p className="text-sm font-medium leading-none">{dictionary.calculatedRiskScoreContent.collectionRiskLevelTitle}</p>
               <p
                 className={cn('text-sm text-muted-foreground', {
-                  'text-gray-600': riskLevel === 'NORISK',
-                  'text-green-600': riskLevel === 'LOW',
-                  'text-yellow-600': riskLevel === 'MEDIUM',
+                  'text-green-600': riskLevel === 'NORISK',
+                  'text-yellow-600': riskLevel === 'LOW',
+                  'text-orange-600': riskLevel === 'MEDIUM',
                   'text-red-600': riskLevel === 'HIGH',
                 })}
               >
@@ -142,9 +142,9 @@ export const RugRiskWizardSummary = () => {
                       key={key}
                       className={cn('align-center flex justify-between gap-10 rounded-md border px-2 py-1 text-sm shadow-sm', {
                         'bg-red-100': value >= 200,
-                        'bg-yellow-100': value < 200 && value > 40,
-                        'bg-green-100': value > 0 && value <= 40,
-                        'bg-gray-100': value === 0,
+                        'bg-orange-100': value < 200 && value > 40,
+                        'bg-yellow-100': value > 0 && value <= 40,
+                        'bg-green-100': value === 0,
                       })}
                     >
                       <p>{key.split('_').map(capitalize).join(' ')}</p>
