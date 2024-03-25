@@ -144,7 +144,7 @@ export const RugRiskWizardSummary = () => {
                         'bg-red-100': value >= 200,
                         'bg-orange-100': value < 200 && value > 40,
                         'bg-yellow-100': value > 0 && value <= 40,
-                        'bg-green-100': value === 0,
+                        'bg-green-100': value <= 0,
                       })}
                     >
                       <p>{key.split('_').map(capitalize).join(' ')}</p>
