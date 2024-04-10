@@ -49,7 +49,7 @@ export const en = {
     },
     summary: {
       howWeAreCalculatingRiskLevelPopover: {
-        triggerText: 'How are we calculating the risk level?',
+        triggerText: 'How is the risk level calculated?',
         riskLevels: {
           noRisk: {
             label: 'NO RISK',
@@ -74,7 +74,7 @@ export const en = {
         description: {
           formError: 'Please fix issues in the form to see results of calculation the risk score of your collection.',
           calculated: 'Your collection risk score has been calculated.',
-          notCalculated: 'Please fill in the form to see results of calculation the risk score of your collection.',
+          notCalculated: 'Please fill in the form to see the risk score of the collection.',
         },
       },
       calculatedRiskScoreContent: {
@@ -113,7 +113,7 @@ export const en = {
       },
       supply_key: {
         label: 'Supply Key',
-        description: 'The SUPPLY key can change the total supply of an token within a Collection and must be set to mint additional tokens.',
+        description: 'The SUPPLY key can change the total supply of a token within a Collection and must be set to mint additional tokens.',
       },
       kyc_key: {
         label: 'KYC Key',
@@ -122,7 +122,7 @@ export const en = {
       pause_key: {
         label: 'Pause Key',
         description:
-          'The PAUSE key that has the authority to pause or unpause an token Collection. Pausing an Collection prevents all transfers of the tokens within the Collection.',
+          'The PAUSE key has the authority to pause or unpause a Collection. Pausing a Collection prevents all transfers of the tokens within the Collection.',
       },
       fee_schedule_key: {
         label: 'Fee Schedule Key',
