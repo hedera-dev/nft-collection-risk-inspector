@@ -18,7 +18,7 @@
  *
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Info } from 'lucide-react';
 import { Path, useForm } from 'react-hook-form';
@@ -30,6 +30,8 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Switch } from '@/components/ui/switch';
 import { useMatchMediaContext } from '@/utils/MatchMediaContext';
+import { isValidTokenId } from '@/utils/isValidToken';
+import { fetchTokenName } from '@/utils/fetchTokenName';
 
 export const RugRiskWizardTabForm = <T extends z.Schema>({
   schema,
@@ -52,6 +54,7 @@ export const RugRiskWizardTabForm = <T extends z.Schema>({
   submitOnValueChange?: boolean;
   keysWithDescriptions: Record<string, { type: string; label: string; description?: string }>;
 }) => {
+  const [tokenName, setTokenName] = useState<string>('');
   const { isMd } = useMatchMediaContext();
   const { setHasFormError } = useRugRiskWizardContext();
 
@@ -85,11 +88,18 @@ export const RugRiskWizardTabForm = <T extends z.Schema>({
     }
   }, [setHasFormError, submitOnValueChange, rugRiskWizardTabForm.formState.errors]);
 
+  const handleTokenBlur = async (tokenId: string) => {
+    if (!isValidTokenId(tokenId)) return;
+    const tokenName = await fetchTokenName(tokenId, 'mainnet');
+    setTokenName(tokenName);
+  };
+
   return (
     <Form {...rugRiskWizardTabForm}>
       <form onSubmit={rugRiskWizardTabForm.handleSubmit(onSubmit)} className="grid gap-4">
         {Object.entries(keysWithDescriptions).map(([key, { type, label, description }]) => (
           <FormField
+            key={key}
             control={rugRiskWizardTabForm.control}
             name={key as Path<z.TypeOf<T>>}
             render={({ field }) =>
@@ -118,8 +128,16 @@ export const RugRiskWizardTabForm = <T extends z.Schema>({
                   <FormLabel>{label}</FormLabel>
                   <FormDescription>{description}</FormDescription>
                   <FormControl className="mt-2">
-                    <Input type={type} {...field} />
+                    <Input
+                      type={type}
+                      {...field}
+                      onBlur={(event) => {
+                        field.onBlur();
+                        void handleTokenBlur(event.target.value);
+                      }}
+                    />
                   </FormControl>
+                  {tokenName && <p className="mt-2 text-sm text-muted-foreground">{tokenName}</p>}
                   <FormMessage />
                 </FormItem>
               )
