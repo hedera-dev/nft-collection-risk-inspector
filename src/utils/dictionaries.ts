@@ -31,7 +31,7 @@ export const en = {
         submitButtonText: {
           calculate: 'Calculate risk score',
           recalculate: 'Recalculate risk score',
-        }
+        },
       },
       existingToken: {
         title: 'Existing token',
@@ -49,7 +49,7 @@ export const en = {
     },
     summary: {
       howWeAreCalculatingRiskLevelPopover: {
-        triggerText: 'How is the risk level calculated?',
+        triggerText: 'How is Risk Level calculated',
         riskLevels: {
           noRisk: {
             label: 'NO RISK',
@@ -80,7 +80,7 @@ export const en = {
       calculatedRiskScoreContent: {
         collectionRiskLevelTitle: 'Collection risk level:',
         collectionRiskScoreTitle: 'Total collection risk score:',
-        showAllRiskFactorsButtonText: 'List all the risk factors'
+        showAllRiskFactorsButtonText: 'List all the risk factors',
       },
       riskScoreFactorsTitle: 'Risk score factors:',
     },
