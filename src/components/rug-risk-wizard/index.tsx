@@ -66,13 +66,10 @@ export const RugRiskWizard = () => {
   const [riskScore, setRiskScore] = useState<number | null>(null);
   const [riskLevel, setRiskLevel] = useState<null | RiskLevel>(null);
   const [riskFactors, setRiskFactors] = useState<RiskScoreFactors | null>(null);
-
   const [hasFormError, setHasFormError] = useState<boolean>(false);
-
   const [activeTab, setActiveTab] = useState<'new-token' | 'existing-token'>('new-token');
 
   const isCalculated = riskScore !== null && !!riskLevel;
-
   const submitButtonText = isCalculated ? dictionary.tabs.newToken.submitButtonText.recalculate : dictionary.tabs.newToken.submitButtonText.calculate;
 
   const resetRiskData = () => {
