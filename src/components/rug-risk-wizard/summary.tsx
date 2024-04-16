@@ -109,7 +109,7 @@ export const RugRiskWizardSummary = () => {
               <p className="text-sm font-medium leading-none">{dictionary.calculatedRiskScoreContent.collectionRiskLevelTitle}</p>
               <p
                 className={cn('text-sm text-muted-foreground', {
-                  'text-green-600': riskLevel === 'NORISK',
+                  'text-green-600': riskLevel === 'NO RISK',
                   'text-yellow-600': riskLevel === 'LOW',
                   'text-orange-600': riskLevel === 'MEDIUM',
                   'text-red-600': riskLevel === 'HIGH',
