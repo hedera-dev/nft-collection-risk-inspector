@@ -27,6 +27,9 @@ import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { en } from '@/utils/dictionaries';
 import { cn } from '@/utils/helpers';
+import { Tooltip } from 'react-tooltip';
+import { Fragment } from 'react';
+import { inputsDataForNewTokenKeysWithDescriptions } from '@/utils/forms-inputs-data';
 
 const dictionary = en.rugRiskWizard.summary;
 
@@ -80,7 +83,6 @@ const RugRiskWizardSummaryCardHeader = ({ isCalculated = false, hasFormError = f
 
 export const RugRiskWizardSummary = () => {
   const { riskLevel, riskScore, riskFactors, hasFormError } = useRugRiskWizardContext();
-
   const cardWrapperClassName = 'rounded-none border-0 lg:border-l p-0 px-6 lg:pr-0 shadow-none';
 
   if (hasFormError) {
@@ -138,18 +140,31 @@ export const RugRiskWizardSummary = () => {
                 {Object.entries(riskFactors)
                   .filter(([_, value]) => !!value)
                   .map(([key, value]) => (
-                    <div
-                      key={key}
-                      className={cn('align-center flex justify-between gap-10 rounded-md border px-2 py-1 text-sm shadow-sm', {
-                        'bg-red-100': value >= 200,
-                        'bg-orange-100': value < 200 && value > 40,
-                        'bg-yellow-100': value > 0 && value <= 40,
-                        'bg-green-100': value <= 0,
-                      })}
-                    >
-                      <p>{key.split('_').map(capitalize).join(' ')}</p>
-                      <p className="self-end font-semibold">{value}</p>
-                    </div>
+                    <Fragment key={key}>
+                      <div
+                        data-tooltip-id={`tooltip-${key}`}
+                        key={key}
+                        className={cn('align-center flex justify-between gap-10 rounded-md border px-2 py-1 text-sm shadow-sm', {
+                          'bg-red-100': value >= 200,
+                          'bg-orange-100': value < 200 && value > 40,
+                          'bg-yellow-100': value > 0 && value <= 40,
+                          'bg-green-100': value <= 0,
+                        })}
+                      >
+                        <p>{key.split('_').map(capitalize).join(' ')}</p>
+                        <p className="self-end font-semibold">{value}</p>
+                      </div>
+                      <Tooltip
+                        className="max-w-[300px] border shadow-md"
+                        id={`tooltip-${key}`}
+                        positionStrategy="fixed"
+                        style={{ backgroundColor: 'white', color: 'black' }}
+                        opacity={1}
+                        role="tooltip"
+                      >
+                        {inputsDataForNewTokenKeysWithDescriptions[key as keyof typeof inputsDataForNewTokenKeysWithDescriptions]?.description}
+                      </Tooltip>
+                    </Fragment>
                   ))}
               </div>
             </ScrollArea>
