@@ -1,6 +1,6 @@
 /*
  *
- * Hedera Rug Risk Inspector
+ * Risk Inspector
  *
  * Copyright (C) 2024 Hedera Hashgraph, LLC
  *
