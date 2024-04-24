@@ -1,6 +1,6 @@
-# Rug Risk Inspector for Hedera Tokens
+# Risk Inspector for Hedera Tokens
 
-The Rug Risk Inspector application serves as a tool to evaluate the risk associated with tokens on the Hedera network, specifically to assess the likelihood of a rug pull based on a token's properties. It calculates a risk score and levels by examining various risk factors like Admin Key, Supply Key, KYC Key, etc.
+Risk Inspector application serves as a tool to evaluate the risk associated with tokens on the Hedera network, specifically to assess the likelihood of a rug pull based on a token's properties. It calculates a risk score and levels by examining various risk factors like Admin Key, Supply Key, KYC Key, etc.
 
 ## Usage
 

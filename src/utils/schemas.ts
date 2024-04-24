@@ -1,6 +1,6 @@
 /*
  *
- * Hedera Rug Risk Inspector
+ * Risk Inspector
  *
  * Copyright (C) 2024 Hedera Hashgraph, LLC
  *
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- */ 
+ */
 
 import { z } from 'zod';
 import { en } from '@/utils/dictionaries';
