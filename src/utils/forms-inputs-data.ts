@@ -76,6 +76,12 @@ export const inputsDataForNewTokenKeysWithDescriptions = {
     label: dictionary.fee_schedule_key.label,
     description: dictionary.fee_schedule_key.description,
   },
+  metadata_key: {
+    type: 'switch',
+    defaultWeight: defaultWeights.keys.metadata_key,
+    label: dictionary.metadata_key.label,
+    description: dictionary.metadata_key.description,
+  },
 } as const;
 
 export const inputsDataForExistingTokenKeysWithDescriptions = {
