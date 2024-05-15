@@ -20,9 +20,9 @@
 
 export const en = {
   appHeader: {
-    title: 'Rug Risk Inspector',
+    title: 'Risk Inspector',
     description:
-      "Use this tool to calculate the risk of a rug pull for a token. The tool will calculate a risk score and risk level based on the token's properties.",
+      "Use this tool to calculate the overall risk of an NFT Collection. The tool will calculate a risk score and risk level based on the keys and permissions set."",
   },
   rugRiskWizard: {
     tabs: {
