@@ -24,11 +24,6 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      external: ['@hashgraph/nft-utilities'],
-    },
-  },
   plugins: [react()],
   resolve: {
     alias: {

@@ -19,7 +19,7 @@
  */
 
 import { createContext, useContext, useState } from 'react';
-import type { RiskLevel, RiskScoreFactors } from '@hashgraph/hedera-nft-utilities/src/risk';
+import type { RiskLevel, RiskScoreFactors } from '@hashgraph/hedera-nft-sdk';
 import { RugRiskWizardSummary } from '@/components/rug-risk-wizard/summary';
 import { RugRiskWizardExistingTokenTabForm } from '@/components/rug-risk-wizard/tab-forms/existing-token';
 import { RugRiskWizardNewTokenTabForm } from '@/components/rug-risk-wizard/tab-forms/new-token';
