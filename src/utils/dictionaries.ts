@@ -129,6 +129,11 @@ export const en = {
         description:
           'The Fee Schedule key has the ability to change the Collection’s royalty fees after it has been minted. Changing the royalty fees of a Collection will impact all tokens within the Collection (fixed, royalty and fallback).',
       },
+      metadata_key: {
+        label: 'Metadata Key',
+        description:
+          'The key which can update the metadata of an NFT. This key is used to sign and authorize the transaction to update the metadata of dynamic NFTs.',
+      },
       token_id: {
         label: 'Token ID',
       },

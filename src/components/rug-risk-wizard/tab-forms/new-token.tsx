@@ -43,6 +43,7 @@ export const RugRiskWizardNewTokenTabForm = ({ submitButtonText }: { submitButto
         kyc_key: renderRiskScoreCalculationKey(values.kyc_key),
         pause_key: renderRiskScoreCalculationKey(values.pause_key),
         fee_schedule_key: renderRiskScoreCalculationKey(values.fee_schedule_key),
+        metadata_key: renderRiskScoreCalculationKey(values.metadata_key),
       },
     });
 
@@ -69,6 +70,7 @@ export const RugRiskWizardNewTokenTabForm = ({ submitButtonText }: { submitButto
         kyc_key: false,
         pause_key: false,
         fee_schedule_key: false,
+        metadata_key: false,
       }}
     />
   );

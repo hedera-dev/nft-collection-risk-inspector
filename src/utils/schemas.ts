@@ -32,6 +32,7 @@ export const newTokenSchema = z
     kyc_key: z.boolean().optional(),
     pause_key: z.boolean().optional(),
     fee_schedule_key: z.boolean().optional(),
+    metadata_key: z.boolean().optional(),
   })
   .superRefine(({ max_supply, total_supply }, ctx) => {
     if (max_supply && max_supply > 0 && total_supply > max_supply) {
