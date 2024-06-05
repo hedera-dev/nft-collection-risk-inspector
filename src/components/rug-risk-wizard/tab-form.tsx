@@ -50,6 +50,7 @@ export const RugRiskWizardTabForm = <T extends z.Schema>({
   defaultValues: z.infer<T>;
   submitButtonText: string;
   schema: T;
+  // eslint-disable-next-line no-unused-vars
   onSubmit: (values: z.infer<T>) => void;
   submitOnValueChange?: boolean;
   keysWithDescriptions: Record<string, { type: string; label: string; description?: string }>;

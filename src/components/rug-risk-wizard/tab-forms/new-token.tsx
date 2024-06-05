@@ -18,7 +18,7 @@
  *
  */
 
-import { calculateRiskScoreFromData } from '@hashgraph/hedera-nft-utilities/src/risk';
+import { calculateRiskScoreFromData } from '@hashgraph/hedera-nft-sdk';
 import { z } from 'zod';
 import { useRugRiskWizardContext } from '@/components/rug-risk-wizard';
 import { RugRiskWizardTabForm } from '@/components/rug-risk-wizard/tab-form';
